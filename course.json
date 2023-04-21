@@ -1,18 +1,16 @@
 {
   "author": {
-    "name": "ThePrimeagen",
-    "company": "ThePrimeagen"
+    "name": "Lasse Lund Sten Jensen",
+    "company": "Novo Nordisk"
   },
-  "title": "Rust For Typescript Devs",
-  "subtitle": "for Frontend Masters",
-  "frontendMastersLink": "https://frontendmasters.com/courses/rust-ts-devs/",
+  "title": "Go For Typescript Devs",
+  "subtitle": "Automating tests with BDD",
+  "frontendMastersLink": "",
   "social": {
-    "twitch": "theprimeagen",
-    "github": "theprimeagen",
-    "twitter": "theprimeagen"
+    "github": "lasselundstenjensen"
   },
-  "description": "The greatest course you will ever take on Rust for a TypeScript Developer.",
-  "keywords": ["Rust", "Rustlang", "Typescript", "JavaScript"],
-  "productionBaseUrl": "/rust-for-typescript-devs",
+  "description": "The greatest course you will ever take on Go for a TypeScript Developer.",
+  "keywords": ["Go", "Golang", "Typescript", "JavaScript"],
+  "productionBaseUrl": "/go-for-typescript-devs",
   "csvPath": "./out/lessons.csv"
 }
