@@ -11,6 +11,6 @@
   },
   "description": "The greatest course you will ever take on Go for a TypeScript Developer.",
   "keywords": ["Go", "Golang", "Typescript", "JavaScript"],
-  "productionBaseUrl": "/",
+  "productionBaseUrl": "",
   "csvPath": "./out/lessons.csv"
 }
