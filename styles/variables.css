@@ -1,11 +1,13 @@
 :root {
   --primary: #dfa067;
   --secondary: #93aca7;
-  --highlight: #224159;
+  --highlight: #f9f9f9;
+  --accent: rgb(25, 40, 43);
 
   --text-header: var(--primary);
+  --text-main-headers-link: var(--accent);
   --text-main-headers: var(--highlight);
-  --text-links: #007bff;
+  --text-links: #ffea00;
   --text-footer: #474a4d;
 
   --bg-main: white;
@@ -13,7 +15,7 @@
   --bg-lesson: rgb(25, 40, 43);
 
   --nav-buttons: var(--highlight);
-  --nav-buttons-text: white;
+  --nav-buttons-text: var(--text-links);
 
   --corner-active: var(--highlight);
   --corner-inactive: #f4f4f4;

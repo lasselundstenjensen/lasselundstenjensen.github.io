@@ -31,6 +31,7 @@ img {
 
 body {
   font-family: "Open Sans";
+  color:rgba(255, 255, 255);
   background: linear-gradient(90deg, var(--bg-main) 15px, transparent 1%) center,
     linear-gradient(var(--bg-main) 15px, transparent 1%) center, var(--bg-dots);
   background-size: 16px 16px;
@@ -206,6 +207,7 @@ header .cta-btn {
   text-transform: uppercase;
   font-weight: bold;
   color: var(--text-main-headers);
+  color: var(--text-main-headers-link);
 }
 
 .lesson-section-title {
