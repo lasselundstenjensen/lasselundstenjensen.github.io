@@ -212,28 +212,3 @@ own.
 <br />
 <br />
 <br />
-
-## Who am I?
-
-I am best known for my role at TheStartup™, which is CEO, CEO, CEO, CEO, and
-Chairmen of the board.
-
-![Youtube](./images/youtube.png)
-![Twitch](./images/twitch.png)
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
