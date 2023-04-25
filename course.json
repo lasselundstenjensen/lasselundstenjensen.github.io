@@ -9,8 +9,8 @@
   "social": {
     "github": "lasselundstenjensen"
   },
-  "description": "The greatest course you will ever take on Go for a TypeScript Developer.",
-  "keywords": ["Go", "Golang", "Typescript", "JavaScript"],
+  "description": "The MLOps way of automatic testing with BDD.",
+  "keywords": ["Go", "Golang", "BDD", "Allure"],
   "productionBaseUrl": "",
   "csvPath": "./out/lessons.csv"
 }

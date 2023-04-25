@@ -3,9 +3,10 @@ title: "Introduction"
 description: "The introduction to this course."
 ---
 
-## Rust for TypeScript devs
+## BDD
 
-i hope you are ready, we will be moving fast today.
+DMA Knowledge bytes: BDD real world examples and Best practices
+This session will showcase real-world examples of successful implementations of Behavior Driven Development (BDD) and lesson learned
 
 <br />
 <br />
