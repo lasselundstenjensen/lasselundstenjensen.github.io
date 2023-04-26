@@ -16,6 +16,8 @@ This session will cover advanced topics in Behavior Driven Development (BDD), in
 #### **Schedule**
 
 - Fixtures
+  - Sharing fixtures between projects/components
+    - Arrange, Act, Assert, Cleanup
 - Deduplication
 - Mocking
 - Allure reports
