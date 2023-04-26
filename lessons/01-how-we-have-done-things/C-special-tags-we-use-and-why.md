@@ -107,14 +107,24 @@ For tests that depend on a Docker container.
 
 ```gherkin
 @container
-...
-Feature: It must be possible to assess that a tabular regression inference unit behaves as intended
+Scenario: Perform end-to-end evaluation via the docker container (success)
+    Given a test dataset for image binary classification
+    And an evaluation plan file for image binary classification with no evaluation tasks and no report specification
+    And with local report file location
+    When we invoke the inference unit evaluation container with local inference
+    Then the application returns a successful exit code
 ```
 
-To run all offline tests:
+To run all container-based tests:
 
 ```bash
-behave --tags '@offline' iu_validation/features
+behave --tags '@container' iu_validation/features
+```
+
+Or leave them out:
+
+```bash
+behave --tags '~@container' iu_validation/features
 ```
 
 <br />
