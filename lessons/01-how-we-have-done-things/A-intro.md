@@ -63,14 +63,14 @@ I want you to _feel inspired_ to do more. You can learn the deep concepts on you
 #### **What we wont cover**
 
 - Proper syntax
-- Deep dives
+- Deep dives into implementation
 - Allure reports
 - Fixtures
 
 <br />
 <br />
 
-The latter two are for tomorrow, by the way.
+The latter two are for tomorrow.
 
 <br />
 <br />
