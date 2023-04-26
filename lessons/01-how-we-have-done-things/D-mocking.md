@@ -103,7 +103,7 @@ TODO: Name some
 
 #### **Mocking it**
 
-Using Behave as orchestrator for the test runners, they call the IUV docker container, which in turn calls the mock application that behaves like a simulated real deployed AI  model.
+Using Behave as orchestrator for the test runs, they call the IUV docker container, which in turn calls the mock application that behaves like a simulated real deployed AI  model.
 
 <br />
 <br />
