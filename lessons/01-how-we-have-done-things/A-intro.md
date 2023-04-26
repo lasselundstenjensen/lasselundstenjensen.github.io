@@ -5,19 +5,21 @@ description: "The introduction to the MLOps way."
 
 ## The MLOps way of testing
 
-DMA Knowledge bytes: BDD real world examples and Best practices
-This session will showcase real-world examples of successful implementations of Behavior Driven Development (BDD) and lesson learned
-
 <br />
 <br />
 
 #### **Schedule**
 
-- Why do testing?
+- What we think about testing
 - Special tags we use and why
 - Mocking
 - Case: Deepchecks
 
+<br />
+<br />
+<br />
+<br />
+<br />
 <br />
 <br />
 <br />
@@ -70,7 +72,7 @@ I want you to _feel inspired_ to do more. You can learn the deep concepts on you
 <br />
 <br />
 
-The latter two are for tomorrow.
+The latter two we touch upon tomorrow.
 
 <br />
 <br />
