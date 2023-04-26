@@ -3,11 +3,24 @@ title: "Special tags we use and why"
 description: "Benefits of tests when refactoring"
 ---
 
-## Case: Deepchecks
+## Special tags we use and why
 
-DMA Knowledge bytes: BDD real world examples and Best practices
-This session will showcase real-world examples of successful implementations of Behavior Driven Development (BDD) and lesson learned
+Some tags have been introduced to help control tests and scope. We use them to orchestrate test runs both locally and as part of the CI and deployment pipelines.
 
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 <br />
 <br />
 
