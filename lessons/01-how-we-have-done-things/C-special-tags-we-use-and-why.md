@@ -31,7 +31,7 @@ Some tags have been introduced to help control tests and scope. We use them to o
 
 #### **@fixture.\<something-something\>**
 
-We use these for pre-conditions, setup and tear-down before and after test execution. We will not deep dive into these in this session.
+We use these for pre-conditions, setup and tear-down before and after test execution. 
 
 ```gherkin
 @fixture.role.validate
@@ -56,6 +56,13 @@ Feature: It must be possible to assess that an image binary classification infer
 Feature: Evaluation plan definition
 ```
 
+In this session we will not deep dive into how these work. Furthermore, Behave has specific implementation details as do other test runners.
+
+<br />
+<br />
+<br />
+<br />
+<br />
 <br />
 <br />
 <br />
@@ -89,6 +96,11 @@ To run all offline tests:
 behave --tags '@offline' iu_validation/features
 ```
 
+<br />
+<br />
+<br />
+<br />
+<br />
 <br />
 <br />
 <br />
@@ -148,15 +160,26 @@ behave --tags '~@container' iu_validation/features
 <br />
 <br />
 <br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 #### **@InProgress**
 
-Just running tests. This tag signifies a test can run offline—that is, locally.
+Flag for us to indicate a scenario is not yet complete. We can run tests with or without these scenarios.
+
+Here is one that is commented out, because there is no feature flag for it yet:
 
 ```gherkin
-@offline
-...
-Feature: It must be possible to assess that a tabular regression inference unit behaves as intended
+#  @PV @InProgress
+#  Scenario: Perform inference unit evaluation with a multiple image datapoint request to the inference unit
+#    Given an inference unit utilizing multiple images for predictions
+#    And a dataset in the coco dataset format supporting multiple images for each datapoint
+#    When we run inference unit evaluation
+#    Then we parse the responses from the inference unit as a single prediction
+#    Then metrics are calculated correctly
 ```
 
 To run without the tests for features/scenarios marked as _in progress_:
@@ -165,6 +188,11 @@ To run without the tests for features/scenarios marked as _in progress_:
 behave --tags '~@InProgress' iu_validation/features
 ```
 
+<br />
+<br />
+<br />
+<br />
+<br />
 <br />
 <br />
 <br />
@@ -183,86 +211,12 @@ behave --tags '~@InProgress' iu_validation/features
 <br />
 
 #### **@s3**
-
-Just running tests. This tag signifies a test can run offline—that is, locally.
-
-```gherkin
-@offline
-...
-Feature: It must be possible to assess that a tabular regression inference unit behaves as intended
-```
-
-To run without the tests for features/scenarios marked as _in progress_:
-
-```bash
-behave --tags '~@InProgress' iu_validation/features
-```
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-
+#### **@aws**
 #### **@dynamodb**
 
-Just running tests. This tag signifies a test can run offline—that is, locally.
-
-```gherkin
-@offline
-...
-Feature: It must be possible to assess that a tabular regression inference unit behaves as intended
-```
-
-To run without the tests for features/scenarios marked as _in progress_:
-
-```bash
-behave --tags '~@InProgress' iu_validation/features
-```
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 <br />
 
-#### **@aws**
-
-Just running tests. This tag signifies a test can run offline—that is, locally.
-
-```gherkin
-@offline
-...
-Feature: It must be possible to assess that a tabular regression inference unit behaves as intended
-```
-
-To run without the tests for features/scenarios marked as _in progress_:
-
-```bash
-behave --tags '~@InProgress' iu_validation/features
-```
+Identifies tests that have something to do with _s3_, _dynamodb_ or _aws_ in general and thus dependencies to AWS cloud at runtime.
 
 <br />
 <br />

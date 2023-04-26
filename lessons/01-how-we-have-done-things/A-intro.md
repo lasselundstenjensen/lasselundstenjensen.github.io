@@ -61,8 +61,13 @@ I want you to _feel inspired_ to do more. You can learn the deep concepts on you
 <br />
 <br />
 <br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
-#### **What we wont cover**
+#### **What we wont cover today**
 
 - Proper syntax
 - Deep dives into implementation
@@ -72,7 +77,7 @@ I want you to _feel inspired_ to do more. You can learn the deep concepts on you
 <br />
 <br />
 
-The latter two we touch upon tomorrow.
+We will touch upon Allure in another session.
 
 <br />
 <br />
