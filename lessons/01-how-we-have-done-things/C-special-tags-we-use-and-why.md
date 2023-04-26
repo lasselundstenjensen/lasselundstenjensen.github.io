@@ -1,9 +1,9 @@
 ---
-title: "Why even test?"
-description: "Motivation for having automated testing"
+title: "Special tags we use and why"
+description: "Benefits of tests when refactoring"
 ---
 
-## Why even test?
+## Case: Deepchecks
 
 DMA Knowledge bytes: BDD real world examples and Best practices
 This session will showcase real-world examples of successful implementations of Behavior Driven Development (BDD) and lesson learned

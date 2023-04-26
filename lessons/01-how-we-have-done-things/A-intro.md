@@ -3,7 +3,7 @@ title: "Introduction"
 description: "The introduction to this course."
 ---
 
-## BDD
+## The MLOps way of testing
 
 DMA Knowledge bytes: BDD real world examples and Best practices
 This session will showcase real-world examples of successful implementations of Behavior Driven Development (BDD) and lesson learned
@@ -13,11 +13,11 @@ This session will showcase real-world examples of successful implementations of 
 
 #### **Schedule**
 
-- Vector, the basic data structure
-- Iterators
-- Enums - Result / Option focus
-- Traits
-- Light touch on memory
+- Why do testing?
+- Special tags we use and why
+- Mocking
+- Case: Deepchecks
+- 
 
 <br />
 <br />

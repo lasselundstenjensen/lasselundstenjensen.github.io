@@ -1,9 +1,9 @@
 ---
-title: "Introduction"
-description: "The introduction to this course."
+title: "Deduplication"
+description: "What it is."
 ---
 
-## BDD - Going deeper
+## Deduplication
 
 Advanced Topics in BDD: Complex Scenarios, Fixtures, and Reporting
 
