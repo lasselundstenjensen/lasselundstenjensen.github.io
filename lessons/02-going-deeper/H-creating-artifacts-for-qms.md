@@ -56,3 +56,57 @@ It happens a couple of places in the pipeline:
 <br />
 <br />
 <br />
+
+#### **What to do with them**
+
+If they are produced inside the Azure DevOps pipeline and published as is, they should just get uploaded as a folder with test result files in it.
+
+The most common output is a single test result file per test execution. 
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+#### **Some context**
+
+![](./images/qms-pipeline-creating-pv-artifacts.png)
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
