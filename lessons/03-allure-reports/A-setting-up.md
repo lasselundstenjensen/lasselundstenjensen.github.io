@@ -61,7 +61,7 @@ This one is generated on every development CI run.
 
 #### **Installing Allure**
 
-Allure for report generation is not currently offered through **`brew`** or **`pip`** or any other package managers, so we have to install it manually. Allure-behave _is_ available.
+`Allure` for report generation is not currently offered through **`brew`** or **`pip`** or any other package managers, so we have to install it manually. `Allure-behave` _is_ available.
 
 The same goes for installing it as part of pipeline execution.
 
@@ -160,6 +160,79 @@ workingDirectory: ./
 <br />
 <br />
 
+#### **Generate test results in the Allure format**
+
+Before Allure can use test results to create a report, the test results need to be generated and formatted for Allure use. This is done by the allure-behave formatter.
+
+Run tests like this:
+
+```bash
+python -W ignore -m 
+  behave 
+  -f allure_behave.formatter:AllureFormatter 
+  -o reports
+  <path to feature files directory>  
+```
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+Here is a variation where specific tags are listed:
+
+```bash
+python -W ignore -m 
+  behave 
+  --tags '~@InProgress'
+  -f allure_behave.formatter:AllureFormatter 
+  -o reports
+  <path to feature files directory>  
+```
+
+Putting a `~` in front of a tag means you are omitting tests with that tag specifically.
+
+See [here](https://jenisys.github.io/behave.example/tutorials/tutorial11.html) for more examples.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 #### **Generate the Allure report (HTML)**
 
 <br />
@@ -194,7 +267,7 @@ workingDirectory: ./
 <br />
 <br />
 
-#### **Running it locally, if browser has security constraints**
+#### **Running it locally is also possible**
 
 ```bash
 allure open reports/html
@@ -225,11 +298,8 @@ allure open reports/html
 #### **Populating the trend chart**
 
 ```yaml
-# Copy Allure categories.json definition to the reports folder before generating the HTML report
-- script: |
-    cp allure/categories.json reports
-displayName: Set Allure report configuration
-```
+### <run the tests here> ###
+````
 
 ```yaml
 - task: AWSShellScript@1
@@ -240,8 +310,7 @@ inputs:
     scriptType: inline
     inlineScript: |
     mkdir reports/history
-    aws s3 sync s3://documentation-hosting-websi-websitebucket75c24d94-1pb0fhxzv7s5y/bdd/history reports/history
-    tree reports
+    aws s3 sync s3://<your-bucket>/<reports>/history reports/history
 ```
 
 ```yaml
@@ -257,7 +326,7 @@ inputs:
     regionName: ${{ parameters.aws_region }}
     scriptType: inline
     inlineScript: |
-    aws s3 sync reports/html s3://documentation-hosting-websi-websitebucket75c24d94-1pb0fhxzv7s5y/bdd/
+    aws s3 sync reports/html s3://<your-bucket>/<reports>/
 ```
 
 <br />
@@ -283,6 +352,10 @@ inputs:
 <br />
 
 #### **Defining custom filters**
+
+It is possible to define custom filters for the Allure report. This is done by creating a `categories.json` file and placing it in the root of the report folder.
+
+A suggestion here is to create it elsewhere in the repo and copy it to the report folder before generating the report.
 
 ```json
 [
