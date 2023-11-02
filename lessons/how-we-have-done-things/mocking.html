@@ -1,0 +1,301 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"/><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"/><link rel="icon" type="image/x-icon" href="/images/favicon.ico"/><title>Mocking – The MLOps way</title><meta name="description" content="The MLOps way of automatic testing with BDD."/><meta name="og:description" content="The MLOps way of automatic testing with BDD."/><meta name="og:title" content="Mocking – The MLOps way"/><meta name="og:image" content="/images/social-share-cover.jpg"/><meta name="twitter:card" content="summary_large_image"/><meta name="next-head-count" content="13"/><link rel="preload" href="/_next/static/css/8de30979dd0b3558.css" as="style"/><link rel="stylesheet" href="/_next/static/css/8de30979dd0b3558.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/_next/static/chunks/webpack-fd82975a6094609f.js" defer=""></script><script src="/_next/static/chunks/framework-4556c45dd113b893.js" defer=""></script><script src="/_next/static/chunks/main-5aae0466a51ee992.js" defer=""></script><script src="/_next/static/chunks/pages/_app-69429768d1ed11ec.js" defer=""></script><script src="/_next/static/chunks/pages/lessons/%5Bsection%5D/%5Bslug%5D-327376b1b9678381.js" defer=""></script><script src="/_next/static/Y3gWq6-2nyAy1rncMS1GS/_buildManifest.js" defer=""></script><script src="/_next/static/Y3gWq6-2nyAy1rncMS1GS/_ssgManifest.js" defer=""></script></head><body><div id="__next"><div class="remix-app"><header class="navbar"><h1 class="navbar-brand"><a href="/">The MLOps way</a></h1><div class="navbar-info"></div></header><div class="content-container"><div class="main"><div class="lesson-container"><div class="lesson"><div class="lesson-content"><h2 id="mocking">Mocking</h2>
+<br />
+<br />
+
+<h4 id="mock-the-right-things"><strong>Mock the right things</strong></h4>
+<p>We use mocking for primarily two reasons:</p>
+<br />
+
+<ol>
+<li>speed up testing</li>
+<li>have a degree of immutability</li>
+</ol>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>With that said, we have mainly mocked things that would be time consuming to test in the cloud because of service deployment and provisioning time.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>We still do integration tests, but not all the time. The mocks are there to help us go faster in local development.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="designing-for-testability"><strong>Designing for testability</strong></h4>
+<p>Building your stuff so it is testable is important. It is not always easy, but it is worth it.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>Something like this:</p>
+<p><img src="/./images/testable-component-design-ecb-pattern.png" alt=""></p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="we-have-several-test-applications"><strong>We have several test applications</strong></h4>
+<p><img src="/./images/test-apps.png" alt=""></p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>An example of the tabular regression app:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> http
+<span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">import</span> pathlib
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> traceback
+
+<span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> ValidationError
+
+<span class="hljs-keyword">from</span> iu_validation.evaluation.integrations.pydantic_models <span class="hljs-keyword">import</span> Response, Request, IUResultRegression
+
+ROOT_DIR = <span class="hljs-built_in">str</span>(pathlib.Path(__file__).parents[<span class="hljs-number">2</span>])
+sys.path.insert(<span class="hljs-number">0</span>, ROOT_DIR)
+
+<span class="hljs-keyword">import</span> uvicorn
+
+<span class="hljs-keyword">import</span> argparse
+<span class="hljs-keyword">import</span> pickle
+<span class="hljs-keyword">import</span> os.path
+
+<span class="hljs-keyword">from</span> iu_validation.utils.util <span class="hljs-keyword">import</span> test_models_path
+<span class="hljs-keyword">from</span> iu_validation.test_apps.util <span class="hljs-keyword">import</span> (
+    read_body,
+    get_ping_response_context,
+    get_response_context_from_response,
+    get_validation_error_response_context,
+    get_exception_response_context,
+    get_resource_not_found_response_context,
+    send_response,
+)
+
+MODEL = pickle.load(<span class="hljs-built_in">open</span>(os.path.join(test_models_path(), <span class="hljs-string">&quot;tabular_regression_model.pkl&quot;</span>), <span class="hljs-string">&quot;rb&quot;</span>))
+
+MODEL_INPUT_FIELDS = [
+    <span class="hljs-string">&quot;area&quot;</span>,
+    <span class="hljs-string">&quot;bedrooms&quot;</span>,
+    <span class="hljs-string">&quot;bathrooms&quot;</span>,
+    <span class="hljs-string">&quot;stories&quot;</span>,
+    <span class="hljs-string">&quot;guestroom&quot;</span>,
+    <span class="hljs-string">&quot;basement&quot;</span>,
+    <span class="hljs-string">&quot;parking&quot;</span>,
+    <span class="hljs-string">&quot;areaperbedroom&quot;</span>,
+    <span class="hljs-string">&quot;bbratio&quot;</span>,
+]
+
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">app</span>(<span class="hljs-params">scope, receive, send</span>):
+    path = scope[<span class="hljs-string">&quot;path&quot;</span>]
+    <span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/api/ping&quot;</span>:
+        response_context = get_ping_response_context()
+    <span class="hljs-keyword">elif</span> path == <span class="hljs-string">&quot;/api/predict&quot;</span>:
+        <span class="hljs-keyword">try</span>:
+            request_body = json.loads(<span class="hljs-keyword">await</span> read_body(receive))
+            request = Request(**request_body)
+            response = predict(request)
+            response_context = get_response_context_from_response(response)
+        <span class="hljs-keyword">except</span> ValidationError <span class="hljs-keyword">as</span> exception:
+            response_context = get_validation_error_response_context(exception)
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> exception:
+            traceback.print_exc()
+            response_context = get_exception_response_context(exception)
+    <span class="hljs-keyword">else</span>:
+        response_context = get_resource_not_found_response_context(path)
+
+    <span class="hljs-keyword">await</span> send_response(response_context, send)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">predict</span>(<span class="hljs-params">request: Request</span>) -&gt; Response:
+    request_dict = request.examples[<span class="hljs-number">0</span>]
+    model_input = [[request_dict[input_field] <span class="hljs-keyword">for</span> input_field <span class="hljs-keyword">in</span> MODEL_INPUT_FIELDS]]
+    prediction = MODEL.predict(model_input)
+    <span class="hljs-keyword">return</span> Response(result=[IUResultRegression(output=<span class="hljs-built_in">str</span>(<span class="hljs-built_in">round</span>(prediction[<span class="hljs-number">0</span>], <span class="hljs-number">2</span>)))])
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    argumentParser = argparse.ArgumentParser(
+        description=<span class="hljs-string">&quot;Test application for exercising tabular inference unit validation&quot;</span>
+    )
+    argumentParser.add_argument(
+        <span class="hljs-string">&quot;port&quot;</span>,
+        <span class="hljs-built_in">type</span>=<span class="hljs-built_in">int</span>,
+    )
+    arguments = argumentParser.parse_args()
+    uvicorn.run(<span class="hljs-string">&quot;tabular_regression:app&quot;</span>, port=arguments.port, log_level=<span class="hljs-string">&quot;info&quot;</span>)
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="mocking-it"><strong>Mocking it</strong></h4>
+<p>Using Behave as orchestrator for the test runs, they call the IUV docker container, which in turn calls the mock application that behaves like a simulated real deployed AI  model.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>Super high-level, it looks like this:</p>
+<p><img src="/./images/mock-app-construction.png" alt=""></p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /></div><div class="lesson-links"><a href="/lessons/how-we-have-done-things/special-tags-we-use-and-why" class="prev">← Previous</a><a href="/lessons/how-we-have-done-things/case-deepchecks" class="next">Next →</a></div></div><div class="details-bg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154" height="154" viewBox="0 0 154 154"><defs><clipPath id="clip-path"><rect id="Rectangle_2238" data-name="Rectangle 2238" width="154" height="154" transform="translate(9467 350)" fill="#fff" stroke="#707070" stroke-width="1"></rect></clipPath><clipPath id="clip-corner-image-active"><rect width="154" height="154"></rect></clipPath></defs><g id="corner-image-active" clip-path="url(#clip-corner-image-active)"><g id="Corner-image-active-2" data-name="Corner-image-active" transform="translate(-9467 -350)" clip-path="url(#clip-path)"><path id="Subtraction_34" data-name="Subtraction 34" d="M-3857.365,1740.766h0l-7.07-7.07,12.89-12.89v14.142l-5.818,5.818Zm-14.142-14.142h0l-7.071-7.07,27.033-27.033v14.143l-19.96,19.96Zm-14.143-14.143h0l-7.07-7.069,41.175-41.175v14.142Zm-14.142-14.142h0l-7.07-7.069,55.317-55.317v14.142Zm-14.142-14.142h0l-7.07-7.069,69.459-69.459v14.142Zm-14.142-14.142h0l-7.07-7.069,76.739-76.739h6.862v7.28Zm-14.143-14.143h0l-7.07-7.069,62.6-62.6h14.142Zm-14.142-14.142h0l-7.07-7.069,48.454-48.454h14.142Zm-14.142-14.142h0l-7.07-7.069,34.312-34.312h14.142Zm-14.142-14.142h0l-7.07-7.069,20.17-20.17h14.142Zm-14.142-14.142h0l-7.071-7.071,6.027-6.027h14.144l-13.1,13.1Zm367.24-56.114v-.909l.455.455-.453.453Z" transform="translate(13472.546 -1236.766)" fill="var(--corner-fill)"></path></g></g></svg></div></div></div></div><footer class="footer"><ul class="socials"><li class="social"><a href="https://github.com/lasselundstenjensen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><defs><clipPath id="clip-github-social"><rect width="32" height="32"></rect></clipPath></defs><g id="github-social" clip-path="url(#clip-github-social)"><g id="Group_272" data-name="Group 272" transform="translate(13522.5 -6994)"><path id="Subtraction_33" data-name="Subtraction 33" d="M-24967.5,8041a15.9,15.9,0,0,1-11.312-4.688A15.893,15.893,0,0,1-24983.5,8025a15.893,15.893,0,0,1,4.689-11.315A15.894,15.894,0,0,1-24967.5,8009a15.894,15.894,0,0,1,11.313,4.686A15.893,15.893,0,0,1-24951.5,8025a15.893,15.893,0,0,1-4.689,11.313A15.9,15.9,0,0,1-24967.5,8041Zm-3.781-4.571h0v3.918h7.895v-6.665a1.836,1.836,0,0,0-1.2-1.718c5.1-.617,7.467-2.975,7.467-7.424a7.176,7.176,0,0,0-1.637-4.728,6.74,6.74,0,0,0,.275-1.812,4.34,4.34,0,0,0-.52-2.452.574.574,0,0,0-.359-.1c-1.061,0-3.465,1.411-3.936,1.694a16.644,16.644,0,0,0-4.2-.489,16.379,16.379,0,0,0-3.969.445c-.846-.5-2.91-1.649-3.859-1.649a.566.566,0,0,0-.354.095,4.3,4.3,0,0,0-.521,2.452,6.7,6.7,0,0,0,.244,1.718,7.346,7.346,0,0,0-1.6,4.822,7.263,7.263,0,0,0,1.533,4.985c1.193,1.359,3.115,2.165,5.871,2.464a1.826,1.826,0,0,0-1.129,1.693v.5h0l-.006,0a7.121,7.121,0,0,1-2.033.363,2.608,2.608,0,0,1-.965-.158,4.438,4.438,0,0,1-1.836-1.881,2.361,2.361,0,0,0-1.248-1.091,3.472,3.472,0,0,0-1.217-.3.584.584,0,0,0-.545.224.282.282,0,0,0,.027.367,1.875,1.875,0,0,0,.447.307,4.732,4.732,0,0,1,.561.355,10.726,10.726,0,0,1,1.682,2.755c.043.092.078.163.105.217a3.876,3.876,0,0,0,2.42,1.185,6.036,6.036,0,0,0,.607.025c.875,0,1.988-.124,2-.125Z" transform="translate(11461 -1015)" fill="var(--footer-icons)"></path><g id="Ellipse_670" data-name="Ellipse 670" transform="translate(-13522.5 6994)" fill="none" stroke="var(--footer-icons)" stroke-width="1"><circle cx="16" cy="16" r="16" stroke="none"></circle><circle cx="16" cy="16" r="15.5" fill="none"></circle></g></g></g></svg></a></li><li class="social"><div class="terms"><p>Content Licensed Under CC-BY-NC-4.0</p><p>Code Samples and Excercises Licensed Under Apache 2.0</p><p>Site Designed by<!-- --> <a href="https://www.alexdanielson.com/">Alex Danielson</a></p></div></li></ul></footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"attributes":{"title":"Mocking","description":"Mocking"},"html":"\u003ch2 id=\"mocking\"\u003eMocking\u003c/h2\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"mock-the-right-things\"\u003e\u003cstrong\u003eMock the right things\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003eWe use mocking for primarily two reasons:\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003col\u003e\n\u003cli\u003espeed up testing\u003c/li\u003e\n\u003cli\u003ehave a degree of immutability\u003c/li\u003e\n\u003c/ol\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eWith that said, we have mainly mocked things that would be time consuming to test in the cloud because of service deployment and provisioning time.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eWe still do integration tests, but not all the time. The mocks are there to help us go faster in local development.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"designing-for-testability\"\u003e\u003cstrong\u003eDesigning for testability\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003eBuilding your stuff so it is testable is important. It is not always easy, but it is worth it.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eSomething like this:\u003c/p\u003e\n\u003cp\u003e\u003cimg src=\"/./images/testable-component-design-ecb-pattern.png\" alt=\"\"\u003e\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"we-have-several-test-applications\"\u003e\u003cstrong\u003eWe have several test applications\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003e\u003cimg src=\"/./images/test-apps.png\" alt=\"\"\u003e\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eAn example of the tabular regression app:\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-python\"\u003e\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e http\n\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e json\n\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e pathlib\n\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e sys\n\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e traceback\n\n\u003cspan class=\"hljs-keyword\"\u003efrom\u003c/span\u003e pydantic \u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e ValidationError\n\n\u003cspan class=\"hljs-keyword\"\u003efrom\u003c/span\u003e iu_validation.evaluation.integrations.pydantic_models \u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e Response, Request, IUResultRegression\n\nROOT_DIR = \u003cspan class=\"hljs-built_in\"\u003estr\u003c/span\u003e(pathlib.Path(__file__).parents[\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e])\nsys.path.insert(\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e, ROOT_DIR)\n\n\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e uvicorn\n\n\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e argparse\n\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e pickle\n\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e os.path\n\n\u003cspan class=\"hljs-keyword\"\u003efrom\u003c/span\u003e iu_validation.utils.util \u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e test_models_path\n\u003cspan class=\"hljs-keyword\"\u003efrom\u003c/span\u003e iu_validation.test_apps.util \u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e (\n    read_body,\n    get_ping_response_context,\n    get_response_context_from_response,\n    get_validation_error_response_context,\n    get_exception_response_context,\n    get_resource_not_found_response_context,\n    send_response,\n)\n\nMODEL = pickle.load(\u003cspan class=\"hljs-built_in\"\u003eopen\u003c/span\u003e(os.path.join(test_models_path(), \u003cspan class=\"hljs-string\"\u003e\u0026quot;tabular_regression_model.pkl\u0026quot;\u003c/span\u003e), \u003cspan class=\"hljs-string\"\u003e\u0026quot;rb\u0026quot;\u003c/span\u003e))\n\nMODEL_INPUT_FIELDS = [\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;area\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;bedrooms\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;bathrooms\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;stories\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;guestroom\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;basement\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;parking\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;areaperbedroom\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;bbratio\u0026quot;\u003c/span\u003e,\n]\n\n\n\u003cspan class=\"hljs-keyword\"\u003easync\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003edef\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eapp\u003c/span\u003e(\u003cspan class=\"hljs-params\"\u003escope, receive, send\u003c/span\u003e):\n    path = scope[\u003cspan class=\"hljs-string\"\u003e\u0026quot;path\u0026quot;\u003c/span\u003e]\n    \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e path == \u003cspan class=\"hljs-string\"\u003e\u0026quot;/api/ping\u0026quot;\u003c/span\u003e:\n        response_context = get_ping_response_context()\n    \u003cspan class=\"hljs-keyword\"\u003eelif\u003c/span\u003e path == \u003cspan class=\"hljs-string\"\u003e\u0026quot;/api/predict\u0026quot;\u003c/span\u003e:\n        \u003cspan class=\"hljs-keyword\"\u003etry\u003c/span\u003e:\n            request_body = json.loads(\u003cspan class=\"hljs-keyword\"\u003eawait\u003c/span\u003e read_body(receive))\n            request = Request(**request_body)\n            response = predict(request)\n            response_context = get_response_context_from_response(response)\n        \u003cspan class=\"hljs-keyword\"\u003eexcept\u003c/span\u003e ValidationError \u003cspan class=\"hljs-keyword\"\u003eas\u003c/span\u003e exception:\n            response_context = get_validation_error_response_context(exception)\n        \u003cspan class=\"hljs-keyword\"\u003eexcept\u003c/span\u003e Exception \u003cspan class=\"hljs-keyword\"\u003eas\u003c/span\u003e exception:\n            traceback.print_exc()\n            response_context = get_exception_response_context(exception)\n    \u003cspan class=\"hljs-keyword\"\u003eelse\u003c/span\u003e:\n        response_context = get_resource_not_found_response_context(path)\n\n    \u003cspan class=\"hljs-keyword\"\u003eawait\u003c/span\u003e send_response(response_context, send)\n\n\n\u003cspan class=\"hljs-keyword\"\u003edef\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003epredict\u003c/span\u003e(\u003cspan class=\"hljs-params\"\u003erequest: Request\u003c/span\u003e) -\u0026gt; Response:\n    request_dict = request.examples[\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e]\n    model_input = [[request_dict[input_field] \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e input_field \u003cspan class=\"hljs-keyword\"\u003ein\u003c/span\u003e MODEL_INPUT_FIELDS]]\n    prediction = MODEL.predict(model_input)\n    \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e Response(result=[IUResultRegression(output=\u003cspan class=\"hljs-built_in\"\u003estr\u003c/span\u003e(\u003cspan class=\"hljs-built_in\"\u003eround\u003c/span\u003e(prediction[\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e], \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e)))])\n\n\n\u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e __name__ == \u003cspan class=\"hljs-string\"\u003e\u0026quot;__main__\u0026quot;\u003c/span\u003e:\n    argumentParser = argparse.ArgumentParser(\n        description=\u003cspan class=\"hljs-string\"\u003e\u0026quot;Test application for exercising tabular inference unit validation\u0026quot;\u003c/span\u003e\n    )\n    argumentParser.add_argument(\n        \u003cspan class=\"hljs-string\"\u003e\u0026quot;port\u0026quot;\u003c/span\u003e,\n        \u003cspan class=\"hljs-built_in\"\u003etype\u003c/span\u003e=\u003cspan class=\"hljs-built_in\"\u003eint\u003c/span\u003e,\n    )\n    arguments = argumentParser.parse_args()\n    uvicorn.run(\u003cspan class=\"hljs-string\"\u003e\u0026quot;tabular_regression:app\u0026quot;\u003c/span\u003e, port=arguments.port, log_level=\u003cspan class=\"hljs-string\"\u003e\u0026quot;info\u0026quot;\u003c/span\u003e)\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"mocking-it\"\u003e\u003cstrong\u003eMocking it\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003eUsing Behave as orchestrator for the test runs, they call the IUV docker container, which in turn calls the mock application that behaves like a simulated real deployed AI  model.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eSuper high-level, it looks like this:\u003c/p\u003e\n\u003cp\u003e\u003cimg src=\"/./images/mock-app-construction.png\" alt=\"\"\u003e\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e","slug":"mocking","title":"Mocking","section":"How We Have Done Things","icon":"info-circle","filePath":"/home/runner/work/lasselundstenjensen.github.io/lasselundstenjensen.github.io/lessons/01-how-we-have-done-things/D-mocking.md","nextSlug":"/lessons/how-we-have-done-things/case-deepchecks","prevSlug":"/lessons/how-we-have-done-things/special-tags-we-use-and-why"}},"__N_SSG":true},"page":"/lessons/[section]/[slug]","query":{"section":"how-we-have-done-things","slug":"mocking"},"buildId":"Y3gWq6-2nyAy1rncMS1GS","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

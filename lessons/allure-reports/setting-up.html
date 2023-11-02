@@ -1,0 +1,449 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"/><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"/><link rel="icon" type="image/x-icon" href="/images/favicon.ico"/><title>Setting up shop – The MLOps way</title><meta name="description" content="The MLOps way of automatic testing with BDD."/><meta name="og:description" content="The MLOps way of automatic testing with BDD."/><meta name="og:title" content="Setting up shop – The MLOps way"/><meta name="og:image" content="/images/social-share-cover.jpg"/><meta name="twitter:card" content="summary_large_image"/><meta name="next-head-count" content="13"/><link rel="preload" href="/_next/static/css/8de30979dd0b3558.css" as="style"/><link rel="stylesheet" href="/_next/static/css/8de30979dd0b3558.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/_next/static/chunks/webpack-fd82975a6094609f.js" defer=""></script><script src="/_next/static/chunks/framework-4556c45dd113b893.js" defer=""></script><script src="/_next/static/chunks/main-5aae0466a51ee992.js" defer=""></script><script src="/_next/static/chunks/pages/_app-69429768d1ed11ec.js" defer=""></script><script src="/_next/static/chunks/pages/lessons/%5Bsection%5D/%5Bslug%5D-327376b1b9678381.js" defer=""></script><script src="/_next/static/Y3gWq6-2nyAy1rncMS1GS/_buildManifest.js" defer=""></script><script src="/_next/static/Y3gWq6-2nyAy1rncMS1GS/_ssgManifest.js" defer=""></script></head><body><div id="__next"><div class="remix-app"><header class="navbar"><h1 class="navbar-brand"><a href="/">The MLOps way</a></h1><div class="navbar-info"></div></header><div class="content-container"><div class="main"><div class="lesson-container"><div class="lesson"><div class="lesson-content"><h2 id="getting-allure-up-and-running">Getting Allure up and running</h2>
+<p>Allure is an open-source reporting tool that consumes automated test output and presents it to give a &quot;test suite&quot;-like overview.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="first-an-example"><strong>First an example</strong></h4>
+<p>Let us have a look at an existing report.</p>
+<p>This one is generated on every development CI run.</p>
+<p><a href="https://dev.mlops.data.novonordisk.cloud/bdd/">MLOps Allure report</a></p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="installing-allure"><strong>Installing Allure</strong></h4>
+<p><code>Allure</code> for report generation is not currently offered through <strong><code>brew</code></strong> or <strong><code>pip</code></strong> or any other package managers, so we have to install it manually. <code>Allure-behave</code> <em>is</em> available.</p>
+<p>The same goes for installing it as part of pipeline execution.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>The installation consists of two parts:</p>
+<br />
+
+<ul>
+<li>allure-behave <ul>
+<li>(the formatter)</li>
+</ul>
+</li>
+<li>allure <ul>
+<li>(the report generator)</li>
+</ul>
+</li>
+</ul>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="installing-it-all-via-an-ado-script-task"><strong>Installing it all via an ADO script task</strong></h4>
+<br />
+
+<p><code>parameters.allure_behave_version = 2.12.0</code></p>
+<p><code>parameters.allure_version = 2.20.1</code></p>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># Install Allure and dependencies</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">script:</span> <span class="hljs-string">|
+    python -m pip install allure-behave==${{ parameters.allure_behave_version }}
+    curl -o allure-${{ parameters.allure_version }}.tgz -Ls https://github.com/allure-framework/allure2/releases/download/${{ parameters.allure_version }}/allure-${{ parameters.allure_version }}.tgz   
+    sudo tar -zxvf allure-${{ parameters.allure_version }}.tgz -C /opt/   
+    sudo ln -s /opt/allure-${{ parameters.allure_version }}/bin/allure /usr/bin/allure
+    allure --version
+</span><span class="hljs-attr">displayName:</span> <span class="hljs-string">Install</span> <span class="hljs-string">Allure</span> <span class="hljs-string">and</span> <span class="hljs-string">dependencies</span>
+<span class="hljs-attr">workingDirectory:</span> <span class="hljs-string">./</span>
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="generate-test-results-in-the-allure-format"><strong>Generate test results in the Allure format</strong></h4>
+<p>Before Allure can use test results to create a report, the test results need to be generated and formatted for Allure use. This is done by the allure-behave formatter.</p>
+<p>Run tests like this:</p>
+<pre><code class="hljs language-bash">python -W ignore -m 
+  behave 
+  -f allure_behave.formatter:AllureFormatter 
+  -o reports
+  &lt;path to feature files directory&gt;  
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>Here is a variation where specific tags are listed:</p>
+<pre><code class="hljs language-bash">python -W ignore -m 
+  behave 
+  --tags <span class="hljs-string">&#x27;~@InProgress&#x27;</span>
+  -f allure_behave.formatter:AllureFormatter 
+  -o reports
+  &lt;path to feature files directory&gt;  
+</code></pre>
+<p>Putting a <code>~</code> in front of a tag means you are omitting tests with that tag specifically.</p>
+<p>See <a href="https://jenisys.github.io/behave.example/tutorials/tutorial11.html">here</a> for more examples.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="generate-the-allure-report-html"><strong>Generate the Allure report (HTML)</strong></h4>
+<br />
+
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># Generate Allure BDD report</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">script:</span> <span class="hljs-string">|
+    allure generate -c reports -o reports/html
+</span><span class="hljs-attr">displayName:</span> <span class="hljs-string">Generate</span> <span class="hljs-string">Allure</span> <span class="hljs-string">report</span>
+<span class="hljs-attr">workingDirectory:</span> <span class="hljs-string">./</span>
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="running-it-locally-is-also-possible"><strong>Running it locally is also possible</strong></h4>
+<pre><code class="hljs language-bash">allure open reports/html
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="populating-the-trend-chart"><strong>Populating the trend chart</strong></h4>
+<pre><code class="hljs language-yaml"><span class="hljs-comment">### &lt;run the tests here&gt; ###</span>
+</code></pre>
+<pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">task:</span> <span class="hljs-string">AWSShellScript@1</span>
+<span class="hljs-attr">displayName:</span> <span class="hljs-string">Download</span> <span class="hljs-string">existing</span> <span class="hljs-string">Allure</span> <span class="hljs-string">report</span> <span class="hljs-string">history</span> <span class="hljs-string">from</span> <span class="hljs-string">S3</span>
+<span class="hljs-attr">inputs:</span>
+    <span class="hljs-attr">awsCredentials:</span> <span class="hljs-string">${{</span> <span class="hljs-string">variables.aws_connection</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">regionName:</span> <span class="hljs-string">${{</span> <span class="hljs-string">parameters.aws_region</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">scriptType:</span> <span class="hljs-string">inline</span>
+    <span class="hljs-attr">inlineScript:</span> <span class="hljs-string">|
+    mkdir reports/history
+    aws s3 sync s3://&lt;your-bucket&gt;/&lt;reports&gt;/history reports/history</span>
+</code></pre>
+<pre><code class="hljs language-yaml"><span class="hljs-comment">### &lt;generate the allure report here&gt; ###</span>
+</code></pre>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># Upload Allure BDD report HTML to the S3 bucket</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">task:</span> <span class="hljs-string">AWSShellScript@1</span>
+<span class="hljs-attr">displayName:</span> <span class="hljs-string">Upload</span> <span class="hljs-string">Allure</span> <span class="hljs-string">report</span> <span class="hljs-string">to</span> <span class="hljs-string">S3</span>
+<span class="hljs-attr">inputs:</span>
+    <span class="hljs-attr">awsCredentials:</span> <span class="hljs-string">${{</span> <span class="hljs-string">variables.aws_connection</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">regionName:</span> <span class="hljs-string">${{</span> <span class="hljs-string">parameters.aws_region</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">scriptType:</span> <span class="hljs-string">inline</span>
+    <span class="hljs-attr">inlineScript:</span> <span class="hljs-string">|</span>
+    <span class="hljs-string">aws</span> <span class="hljs-string">s3</span> <span class="hljs-string">sync</span> <span class="hljs-string">reports/html</span> <span class="hljs-string">s3://&lt;your-bucket&gt;/&lt;reports&gt;/</span>
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="defining-custom-filters"><strong>Defining custom filters</strong></h4>
+<p>It is possible to define custom filters for the Allure report. This is done by creating a <code>categories.json</code> file and placing it in the root of the report folder.</p>
+<p>A suggestion here is to create it elsewhere in the repo and copy it to the report folder before generating the report.</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">[</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Ignored tests&quot;</span><span class="hljs-punctuation">,</span> 
+    <span class="hljs-attr">&quot;matchedStatuses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;skipped&quot;</span><span class="hljs-punctuation">]</span> 
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Broken tests&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;matchedStatuses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;broken&quot;</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Failed tests&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;matchedStatuses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;failed&quot;</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Successful tests&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;matchedStatuses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;passed&quot;</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">]</span>
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>More advanced examples of filtering:</p>
+<br />
+
+<pre><code class="hljs language-json"><span class="hljs-punctuation">[</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Skipped Tests By @Disabled - Definition&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;matchedStatuses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;skipped&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;messageRegex&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.*@Disabled.*&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Broken Tests - Definition&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;matchedStatuses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;broken&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;traceRegex&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.*WebDriverException.*&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;messageRegex&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.*unknown error.*&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Test Defects - Definition&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;matchedStatuses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;broken&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;failed&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;traceRegex&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.*NoSuchElementException.*&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;messageRegex&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.*no such element.*&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Test Defects - Definition&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;matchedStatuses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;broken&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;failed&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;traceRegex&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.*IndexOutOfBoundsException.*&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;messageRegex&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Index.*&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Product Defects - Definition&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;matchedStatuses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span> <span class="hljs-string">&quot;failed&quot;</span> <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;traceRegex&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.*ElementShould.*&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;messageRegex&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.*Element should.*&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Product Defects - Definition&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;matchedStatuses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span> <span class="hljs-string">&quot;failed&quot;</span> <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;traceRegex&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.*checkCondition.*&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;messageRegex&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.*should have.*&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">]</span>
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>And to use them, they need to be copied into the test results folder, prior to generating the Allure HTML report.</p>
+<br />
+
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># Copy Allure categories.json definition to the reports folder before generating the HTML report</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">script:</span> <span class="hljs-string">|
+    cp allure/categories.json /reports
+</span><span class="hljs-attr">displayName:</span> <span class="hljs-string">Set</span> <span class="hljs-string">Allure</span> <span class="hljs-string">report</span> <span class="hljs-string">configuration</span>
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /></div><div class="lesson-links"><a href="/lessons/how-we-have-done-things/case-deepchecks" class="prev">← Previous</a><a href="/lessons/allure-reports/creating-pipeline-artifacts" class="next">Next →</a></div></div><div class="details-bg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154" height="154" viewBox="0 0 154 154"><defs><clipPath id="clip-path"><rect id="Rectangle_2238" data-name="Rectangle 2238" width="154" height="154" transform="translate(9467 350)" fill="#fff" stroke="#707070" stroke-width="1"></rect></clipPath><clipPath id="clip-corner-image-active"><rect width="154" height="154"></rect></clipPath></defs><g id="corner-image-active" clip-path="url(#clip-corner-image-active)"><g id="Corner-image-active-2" data-name="Corner-image-active" transform="translate(-9467 -350)" clip-path="url(#clip-path)"><path id="Subtraction_34" data-name="Subtraction 34" d="M-3857.365,1740.766h0l-7.07-7.07,12.89-12.89v14.142l-5.818,5.818Zm-14.142-14.142h0l-7.071-7.07,27.033-27.033v14.143l-19.96,19.96Zm-14.143-14.143h0l-7.07-7.069,41.175-41.175v14.142Zm-14.142-14.142h0l-7.07-7.069,55.317-55.317v14.142Zm-14.142-14.142h0l-7.07-7.069,69.459-69.459v14.142Zm-14.142-14.142h0l-7.07-7.069,76.739-76.739h6.862v7.28Zm-14.143-14.143h0l-7.07-7.069,62.6-62.6h14.142Zm-14.142-14.142h0l-7.07-7.069,48.454-48.454h14.142Zm-14.142-14.142h0l-7.07-7.069,34.312-34.312h14.142Zm-14.142-14.142h0l-7.07-7.069,20.17-20.17h14.142Zm-14.142-14.142h0l-7.071-7.071,6.027-6.027h14.144l-13.1,13.1Zm367.24-56.114v-.909l.455.455-.453.453Z" transform="translate(13472.546 -1236.766)" fill="var(--corner-fill)"></path></g></g></svg></div></div></div></div><footer class="footer"><ul class="socials"><li class="social"><a href="https://github.com/lasselundstenjensen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><defs><clipPath id="clip-github-social"><rect width="32" height="32"></rect></clipPath></defs><g id="github-social" clip-path="url(#clip-github-social)"><g id="Group_272" data-name="Group 272" transform="translate(13522.5 -6994)"><path id="Subtraction_33" data-name="Subtraction 33" d="M-24967.5,8041a15.9,15.9,0,0,1-11.312-4.688A15.893,15.893,0,0,1-24983.5,8025a15.893,15.893,0,0,1,4.689-11.315A15.894,15.894,0,0,1-24967.5,8009a15.894,15.894,0,0,1,11.313,4.686A15.893,15.893,0,0,1-24951.5,8025a15.893,15.893,0,0,1-4.689,11.313A15.9,15.9,0,0,1-24967.5,8041Zm-3.781-4.571h0v3.918h7.895v-6.665a1.836,1.836,0,0,0-1.2-1.718c5.1-.617,7.467-2.975,7.467-7.424a7.176,7.176,0,0,0-1.637-4.728,6.74,6.74,0,0,0,.275-1.812,4.34,4.34,0,0,0-.52-2.452.574.574,0,0,0-.359-.1c-1.061,0-3.465,1.411-3.936,1.694a16.644,16.644,0,0,0-4.2-.489,16.379,16.379,0,0,0-3.969.445c-.846-.5-2.91-1.649-3.859-1.649a.566.566,0,0,0-.354.095,4.3,4.3,0,0,0-.521,2.452,6.7,6.7,0,0,0,.244,1.718,7.346,7.346,0,0,0-1.6,4.822,7.263,7.263,0,0,0,1.533,4.985c1.193,1.359,3.115,2.165,5.871,2.464a1.826,1.826,0,0,0-1.129,1.693v.5h0l-.006,0a7.121,7.121,0,0,1-2.033.363,2.608,2.608,0,0,1-.965-.158,4.438,4.438,0,0,1-1.836-1.881,2.361,2.361,0,0,0-1.248-1.091,3.472,3.472,0,0,0-1.217-.3.584.584,0,0,0-.545.224.282.282,0,0,0,.027.367,1.875,1.875,0,0,0,.447.307,4.732,4.732,0,0,1,.561.355,10.726,10.726,0,0,1,1.682,2.755c.043.092.078.163.105.217a3.876,3.876,0,0,0,2.42,1.185,6.036,6.036,0,0,0,.607.025c.875,0,1.988-.124,2-.125Z" transform="translate(11461 -1015)" fill="var(--footer-icons)"></path><g id="Ellipse_670" data-name="Ellipse 670" transform="translate(-13522.5 6994)" fill="none" stroke="var(--footer-icons)" stroke-width="1"><circle cx="16" cy="16" r="16" stroke="none"></circle><circle cx="16" cy="16" r="15.5" fill="none"></circle></g></g></g></svg></a></li><li class="social"><div class="terms"><p>Content Licensed Under CC-BY-NC-4.0</p><p>Code Samples and Excercises Licensed Under Apache 2.0</p><p>Site Designed by<!-- --> <a href="https://www.alexdanielson.com/">Alex Danielson</a></p></div></li></ul></footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"attributes":{"title":"Setting up shop","description":"description"},"html":"\u003ch2 id=\"getting-allure-up-and-running\"\u003eGetting Allure up and running\u003c/h2\u003e\n\u003cp\u003eAllure is an open-source reporting tool that consumes automated test output and presents it to give a \u0026quot;test suite\u0026quot;-like overview.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"first-an-example\"\u003e\u003cstrong\u003eFirst an example\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003eLet us have a look at an existing report.\u003c/p\u003e\n\u003cp\u003eThis one is generated on every development CI run.\u003c/p\u003e\n\u003cp\u003e\u003ca href=\"https://dev.mlops.data.novonordisk.cloud/bdd/\"\u003eMLOps Allure report\u003c/a\u003e\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"installing-allure\"\u003e\u003cstrong\u003eInstalling Allure\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003e\u003ccode\u003eAllure\u003c/code\u003e for report generation is not currently offered through \u003cstrong\u003e\u003ccode\u003ebrew\u003c/code\u003e\u003c/strong\u003e or \u003cstrong\u003e\u003ccode\u003epip\u003c/code\u003e\u003c/strong\u003e or any other package managers, so we have to install it manually. \u003ccode\u003eAllure-behave\u003c/code\u003e \u003cem\u003eis\u003c/em\u003e available.\u003c/p\u003e\n\u003cp\u003eThe same goes for installing it as part of pipeline execution.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eThe installation consists of two parts:\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003cul\u003e\n\u003cli\u003eallure-behave \u003cul\u003e\n\u003cli\u003e(the formatter)\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eallure \u003cul\u003e\n\u003cli\u003e(the report generator)\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"installing-it-all-via-an-ado-script-task\"\u003e\u003cstrong\u003eInstalling it all via an ADO script task\u003c/strong\u003e\u003c/h4\u003e\n\u003cbr /\u003e\n\n\u003cp\u003e\u003ccode\u003eparameters.allure_behave_version = 2.12.0\u003c/code\u003e\u003c/p\u003e\n\u003cp\u003e\u003ccode\u003eparameters.allure_version = 2.20.1\u003c/code\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-yaml\"\u003e\u003cspan class=\"hljs-comment\"\u003e# Install Allure and dependencies\u003c/span\u003e\n\u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003escript:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e|\n    python -m pip install allure-behave==${{ parameters.allure_behave_version }}\n    curl -o allure-${{ parameters.allure_version }}.tgz -Ls https://github.com/allure-framework/allure2/releases/download/${{ parameters.allure_version }}/allure-${{ parameters.allure_version }}.tgz   \n    sudo tar -zxvf allure-${{ parameters.allure_version }}.tgz -C /opt/   \n    sudo ln -s /opt/allure-${{ parameters.allure_version }}/bin/allure /usr/bin/allure\n    allure --version\n\u003c/span\u003e\u003cspan class=\"hljs-attr\"\u003edisplayName:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eInstall\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eAllure\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eand\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003edependencies\u003c/span\u003e\n\u003cspan class=\"hljs-attr\"\u003eworkingDirectory:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e./\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"generate-test-results-in-the-allure-format\"\u003e\u003cstrong\u003eGenerate test results in the Allure format\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003eBefore Allure can use test results to create a report, the test results need to be generated and formatted for Allure use. This is done by the allure-behave formatter.\u003c/p\u003e\n\u003cp\u003eRun tests like this:\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003epython -W ignore -m \n  behave \n  -f allure_behave.formatter:AllureFormatter \n  -o reports\n  \u0026lt;path to feature files directory\u0026gt;  \n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eHere is a variation where specific tags are listed:\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003epython -W ignore -m \n  behave \n  --tags \u003cspan class=\"hljs-string\"\u003e\u0026#x27;~@InProgress\u0026#x27;\u003c/span\u003e\n  -f allure_behave.formatter:AllureFormatter \n  -o reports\n  \u0026lt;path to feature files directory\u0026gt;  \n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003ePutting a \u003ccode\u003e~\u003c/code\u003e in front of a tag means you are omitting tests with that tag specifically.\u003c/p\u003e\n\u003cp\u003eSee \u003ca href=\"https://jenisys.github.io/behave.example/tutorials/tutorial11.html\"\u003ehere\u003c/a\u003e for more examples.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"generate-the-allure-report-html\"\u003e\u003cstrong\u003eGenerate the Allure report (HTML)\u003c/strong\u003e\u003c/h4\u003e\n\u003cbr /\u003e\n\n\u003cpre\u003e\u003ccode class=\"hljs language-yaml\"\u003e\u003cspan class=\"hljs-comment\"\u003e# Generate Allure BDD report\u003c/span\u003e\n\u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003escript:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e|\n    allure generate -c reports -o reports/html\n\u003c/span\u003e\u003cspan class=\"hljs-attr\"\u003edisplayName:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eGenerate\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eAllure\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003ereport\u003c/span\u003e\n\u003cspan class=\"hljs-attr\"\u003eworkingDirectory:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e./\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"running-it-locally-is-also-possible\"\u003e\u003cstrong\u003eRunning it locally is also possible\u003c/strong\u003e\u003c/h4\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003eallure open reports/html\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"populating-the-trend-chart\"\u003e\u003cstrong\u003ePopulating the trend chart\u003c/strong\u003e\u003c/h4\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-yaml\"\u003e\u003cspan class=\"hljs-comment\"\u003e### \u0026lt;run the tests here\u0026gt; ###\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-yaml\"\u003e\u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003etask:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eAWSShellScript@1\u003c/span\u003e\n\u003cspan class=\"hljs-attr\"\u003edisplayName:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eDownload\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eexisting\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eAllure\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003ereport\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003ehistory\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003efrom\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eS3\u003c/span\u003e\n\u003cspan class=\"hljs-attr\"\u003einputs:\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003eawsCredentials:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e${{\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003evariables.aws_connection\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e}}\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003eregionName:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e${{\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eparameters.aws_region\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e}}\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003escriptType:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003einline\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003einlineScript:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e|\n    mkdir reports/history\n    aws s3 sync s3://\u0026lt;your-bucket\u0026gt;/\u0026lt;reports\u0026gt;/history reports/history\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-yaml\"\u003e\u003cspan class=\"hljs-comment\"\u003e### \u0026lt;generate the allure report here\u0026gt; ###\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-yaml\"\u003e\u003cspan class=\"hljs-comment\"\u003e# Upload Allure BDD report HTML to the S3 bucket\u003c/span\u003e\n\u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003etask:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eAWSShellScript@1\u003c/span\u003e\n\u003cspan class=\"hljs-attr\"\u003edisplayName:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eUpload\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eAllure\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003ereport\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eto\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eS3\u003c/span\u003e\n\u003cspan class=\"hljs-attr\"\u003einputs:\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003eawsCredentials:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e${{\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003evariables.aws_connection\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e}}\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003eregionName:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e${{\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eparameters.aws_region\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e}}\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003escriptType:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003einline\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003einlineScript:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e|\u003c/span\u003e\n    \u003cspan class=\"hljs-string\"\u003eaws\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003es3\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003esync\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003ereports/html\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003es3://\u0026lt;your-bucket\u0026gt;/\u0026lt;reports\u0026gt;/\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"defining-custom-filters\"\u003e\u003cstrong\u003eDefining custom filters\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003eIt is possible to define custom filters for the Allure report. This is done by creating a \u003ccode\u003ecategories.json\u003c/code\u003e file and placing it in the root of the report folder.\u003c/p\u003e\n\u003cp\u003eA suggestion here is to create it elsewhere in the repo and copy it to the report folder before generating the report.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-json\"\u003e\u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e{\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;name\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;Ignored tests\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e \n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;matchedStatuses\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e\u003cspan class=\"hljs-string\"\u003e\u0026quot;skipped\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e \n  \u003cspan class=\"hljs-punctuation\"\u003e}\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e{\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;name\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;Broken tests\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;matchedStatuses\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e\u003cspan class=\"hljs-string\"\u003e\u0026quot;broken\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e}\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e{\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;name\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;Failed tests\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;matchedStatuses\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e\u003cspan class=\"hljs-string\"\u003e\u0026quot;failed\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e}\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e{\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;name\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;Successful tests\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;matchedStatuses\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e\u003cspan class=\"hljs-string\"\u003e\u0026quot;passed\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e}\u003c/span\u003e\n\u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eMore advanced examples of filtering:\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003cpre\u003e\u003ccode class=\"hljs language-json\"\u003e\u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e{\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;name\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;Skipped Tests By @Disabled - Definition\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;matchedStatuses\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e\u003cspan class=\"hljs-string\"\u003e\u0026quot;skipped\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;messageRegex\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;.*@Disabled.*\u0026quot;\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e}\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e{\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;name\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;Broken Tests - Definition\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;matchedStatuses\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e\u003cspan class=\"hljs-string\"\u003e\u0026quot;broken\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;traceRegex\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;.*WebDriverException.*\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;messageRegex\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;.*unknown error.*\u0026quot;\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e}\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e{\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;name\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;Test Defects - Definition\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;matchedStatuses\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e\u003cspan class=\"hljs-string\"\u003e\u0026quot;broken\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;failed\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;traceRegex\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;.*NoSuchElementException.*\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;messageRegex\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;.*no such element.*\u0026quot;\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e}\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e{\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;name\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;Test Defects - Definition\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;matchedStatuses\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e\u003cspan class=\"hljs-string\"\u003e\u0026quot;broken\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;failed\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;traceRegex\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;.*IndexOutOfBoundsException.*\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;messageRegex\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;Index.*\u0026quot;\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e}\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e{\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;name\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;Product Defects - Definition\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;matchedStatuses\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;failed\u0026quot;\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;traceRegex\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;.*ElementShould.*\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;messageRegex\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;.*Element should.*\u0026quot;\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e}\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e{\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;name\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;Product Defects - Definition\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;matchedStatuses\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e[\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;failed\u0026quot;\u003c/span\u003e \u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;traceRegex\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;.*checkCondition.*\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e,\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003e\u0026quot;messageRegex\u0026quot;\u003c/span\u003e\u003cspan class=\"hljs-punctuation\"\u003e:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;.*should have.*\u0026quot;\u003c/span\u003e\n  \u003cspan class=\"hljs-punctuation\"\u003e}\u003c/span\u003e\n\u003cspan class=\"hljs-punctuation\"\u003e]\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eAnd to use them, they need to be copied into the test results folder, prior to generating the Allure HTML report.\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003cpre\u003e\u003ccode class=\"hljs language-yaml\"\u003e\u003cspan class=\"hljs-comment\"\u003e# Copy Allure categories.json definition to the reports folder before generating the HTML report\u003c/span\u003e\n\u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003escript:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e|\n    cp allure/categories.json /reports\n\u003c/span\u003e\u003cspan class=\"hljs-attr\"\u003edisplayName:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eSet\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eAllure\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003ereport\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003econfiguration\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e","slug":"setting-up","title":"Setting up shop","section":"Allure Reports","icon":"info-circle","filePath":"/home/runner/work/lasselundstenjensen.github.io/lasselundstenjensen.github.io/lessons/03-allure-reports/A-setting-up.md","nextSlug":"/lessons/allure-reports/creating-pipeline-artifacts","prevSlug":"/lessons/how-we-have-done-things/case-deepchecks"}},"__N_SSG":true},"page":"/lessons/[section]/[slug]","query":{"section":"allure-reports","slug":"setting-up"},"buildId":"Y3gWq6-2nyAy1rncMS1GS","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>
