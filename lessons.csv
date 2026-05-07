@@ -1,0 +1,8 @@
+order,sectionTitle,lessonTitle,slug,sectionIcon,filePath,description
+01A,How We Have Done Things,Introduction,how-we-have-done-things/intro,info-circle,/lessons/how-we-have-done-things/intro,The introduction to the MLOps way.
+01B,How We Have Done Things,What we think about testing,how-we-have-done-things/what-we-think-about-testing,info-circle,/lessons/how-we-have-done-things/what-we-think-about-testing,Motivation for having automated testing
+01C,How We Have Done Things,Special tags we use and why,how-we-have-done-things/special-tags-we-use-and-why,info-circle,/lessons/how-we-have-done-things/special-tags-we-use-and-why,Special tags we use and why
+01D,How We Have Done Things,Mocking,how-we-have-done-things/mocking,info-circle,/lessons/how-we-have-done-things/mocking,Mocking
+01E,How We Have Done Things,Case: Deepchecks,how-we-have-done-things/case-deepchecks,info-circle,/lessons/how-we-have-done-things/case-deepchecks,Case: Deepchecks
+03A,Allure Reports,Setting up shop,allure-reports/setting-up,info-circle,/lessons/allure-reports/setting-up,description
+03B,Allure Reports,Creating artifacts for the QMS pipeline,allure-reports/creating-pipeline-artifacts,info-circle,/lessons/allure-reports/creating-pipeline-artifacts,description
